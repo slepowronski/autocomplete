@@ -4,16 +4,18 @@ import {KeyValueLexer} from "../grammar/KeyValueLexer";
 import {KeyValueParser} from "../grammar/KeyValueParser";
 
 export const parseQuery = (query: string, caretPosition: number): KeyValueResult => {
-    // Create the lexer and parser
+    // Create input stream from the given query string
     const inputStream = CharStreams.fromString(prepareQuery(query));
+    // Create lexer
     const lexer = new KeyValueLexer(inputStream);
     const tokenStream = new CommonTokenStream(lexer);
+    // Create parser based on the tokens from lexer
     const parser = new KeyValueParser(tokenStream);
 
-    // Parse the input, where `query` is whatever entry point you defined
+    // Create Abstract Syntax Tree based on the root 'expression' from the parser
     const tree = parser.expression();
 
-    // Visit the tree
+    // Visit the tree to gather the result
     const visitor = new KeyValueResultVisitor(caretPosition);
     return visitor.visit(tree);
 };

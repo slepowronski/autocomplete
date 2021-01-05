@@ -88,10 +88,11 @@ export const AutoComplete: FunctionComponent = () => {
                 to: {
                     line: 0,
                     ch: (suggestionsInfo.result?.range.end ?? 0) +
-                        (isKeyResult ? 1 : 0) + // for key result, extend index by 1 to cover the '=' in query string as well
+                        (isKeyResult ? 1 : 0) + // for key result, extend index by 1 to cover the '=' in query
                         1, // end index is excluded so let's add 1
                 },
                 list: suggestionsInfo.suggestions.map((text, index) => ({
+                    // Append '=' to the key and ' ' to the value
                     text: isKeyResult ? `${text}=` : `${text} `,
                 })),
             }),
