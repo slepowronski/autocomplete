@@ -5,7 +5,7 @@ import {KeyValueParser} from "../grammar/KeyValueParser";
 
 export const parseQuery = (query: string, caretPosition: number): KeyValueResult => {
     // Create the lexer and parser
-    const inputStream = CharStreams.fromString(query);
+    const inputStream = CharStreams.fromString(prepareQuery(query));
     const lexer = new KeyValueLexer(inputStream);
     const tokenStream = new CommonTokenStream(lexer);
     const parser = new KeyValueParser(tokenStream);
@@ -16,4 +16,9 @@ export const parseQuery = (query: string, caretPosition: number): KeyValueResult
     // Visit the tree
     const visitor = new KeyValueResultVisitor(caretPosition);
     return visitor.visit(tree);
+};
+
+const prepareQuery = (query: string): string => {
+    // Remove whitespaces at the end of query string
+    return query.trimEnd();
 };
